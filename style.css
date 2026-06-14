@@ -187,12 +187,12 @@ body {
 	font-size: 14px;
 }
 
-select, input[type="text"], input[type="checkbox"] {
+select, input[type="text"], textarea, input[type="checkbox"] {
 	font-family: inherit;
 	font-size: 14px;
 }
 
-select, input[type="text"] {
+select, input[type="text"], textarea {
 	width: 100%;
 	padding: 10px 12px;
 	border-radius: 8px;
@@ -200,6 +200,11 @@ select, input[type="text"] {
 	background: var(--white);
 	color: var(--text);
 	transition: border-color 0.2s;
+}
+
+textarea {
+	resize: vertical;
+	min-height: 100px;
 }
 
 select:focus, input[type="text"]:focus {
@@ -214,6 +219,48 @@ select:focus, input[type="text"]:focus {
 	flex-wrap: wrap;
 	gap: 10px;
 	margin: 10px 0;
+}
+
+.ai-planner-card {
+	margin-top: 20px;
+	border: 1px solid rgba(156, 175, 136, 0.2);
+}
+
+.ai-planner-card h3 {
+	margin-top: 0;
+}
+
+.ai-planner-card p {
+	margin-bottom: 16px;
+	color: var(--text-light);
+	font-size: 14px;
+}
+
+.ai-response {
+	margin-top: 16px;
+	padding: 16px;
+	border-radius: 10px;
+	background: #f7f3ea;
+	border: 1px solid var(--border);
+	color: var(--text);
+	font-size: 14px;
+}
+
+.ai-response.hidden {
+	display: none;
+}
+
+.ai-response p {
+	margin: 0 0 10px;
+}
+
+.ai-response ul {
+	margin: 0;
+	padding-left: 18px;
+}
+
+.ai-response li {
+	margin-bottom: 6px;
 }
 
 .checkbox-label {

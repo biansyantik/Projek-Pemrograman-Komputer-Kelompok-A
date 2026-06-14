@@ -110,7 +110,16 @@
 						<button type="button" id="searchBtn" class="btn primary full">🔍 Cari Rekomendasi</button>
 						<button type="button" id="resetBtn" class="btn secondary full">🔄 Reset</button>
 					</form>
-
+				<div class="card ai-planner-card">
+					<h3>🧭 AI Route Planner</h3>
+					<p>Ajukan pertanyaan seperti "Saya kuliah di Geodesi selesai jam 3, ingin nugas di kafe sampai jam 6" untuk mendapatkan rekomendasi tempat dari daftar.</p>
+					<label class="form-group">
+						<span class="label-text">Tanyakan ke AI</span>
+						<textarea id="aiQuery" rows="4" placeholder="Contoh: saya kuliah di Geodesi selesai jam 3, ingin nugas di cafe sampai jam 6..."></textarea>
+					</label>
+					<button type="button" id="aiPlanBtn" class="btn secondary full">🧠 Minta Rekomendasi AI</button>
+					<div id="aiResponse" class="ai-response hidden"></div>
+				</div>
 					<!-- Section Tempat Tersimpan -->
 					<div class="card favorites-card">
 						<h3>⭐ Tempat Tersimpan</h3>
@@ -157,38 +166,3 @@
 </body>
 </html>
 
-					<div class="checkboxes">
-						<label><input type="checkbox" id="requireWifi" /> Wajib ada WiFi</label>
-						<label><input type="checkbox" id="requirePlug" /> Wajib ada colokan</label>
-						<label><input type="checkbox" id="prefChair" /> Kursi nyaman</label>
-						<label><input type="checkbox" id="prefLate" /> Buka sampai malam</label>
-						<label><input type="checkbox" id="prefLong" /> Cocok untuk belajar lama</label>
-					</div>
-
-					<div class="actions">
-						<button type="submit" class="btn primary">Cari</button>
-						<button type="button" id="resetBtn" class="btn">Reset</button>
-					</div>
-				</form>
-
-				<aside class="card favorites">
-					<h3>Tempat Tersimpan</h3>
-					<div id="favoritesList">Belum ada favorit</div>
-				</aside>
-			</div>
-
-			<section id="results" class="cards-grid"></section>
-		</section>
-	</main>
-
-	<!-- Detail modal -->
-	<div id="detailModal" class="modal hidden">
-		<div class="modal-card card">
-			<button id="closeDetail" class="close">&times;</button>
-			<div id="detailContent"></div>
-		</div>
-	</div>
-
-	<script src="script.js"></script>
-</body>
-</html>

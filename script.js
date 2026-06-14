@@ -1,172 +1,211 @@
 // ===================================
-// DATA DUMMY - 10+ Tempat di Semarang
+// DATA TEMPAT NYATA DI TEMBALANG
 // ===================================
 
 const places = [
 	{
 		id: 1,
-		name: "Kafe Hijau Tembalang",
+		name: "Embun Senja Coffee n Eatery",
 		type: "Kafe",
 		location: "Tembalang",
 		budget: "Sedang",
 		suasana: "Tenang",
+		rating: 4.7,
+		wifi: true,
+		plug: true,
+		comfyChair: true,
+		openLate: false,
+		longStudy: true,
+		ac: true,
+		area: "Indoor",
+		description: "Embun Senja Coffee n Eatery di Tembalang populer dengan suasana nyaman, WiFi kencang, dan menu kopi plus makanan yang lengkap."
+	},
+	{
+		id: 2,
+		name: "Kopi Nako Semarang Tembalang",
+		type: "Kafe",
+		location: "Tembalang",
+		budget: "Sedang",
+		suasana: "Sedang",
+		rating: 4.8,
+		wifi: true,
+		plug: true,
+		comfyChair: true,
+		openLate: false,
+		longStudy: true,
+		ac: true,
+		area: "Indoor",
+		description: "Kopi Nako Tembalang terkenal karena suasana cozy dan kopi enak, cocok untuk nugas atau kerja kelompok."
+	},
+	{
+		id: 3,
+		name: "Treetales Coffee & Eatery by Taman Teduh",
+		type: "Kafe",
+		location: "Tembalang",
+		budget: "Sedang",
+		suasana: "Tenang",
+		rating: 4.9,
+		wifi: true,
+		plug: true,
+		comfyChair: true,
+		openLate: false,
+		longStudy: true,
+		ac: true,
+		area: "Indoor",
+		description: "Treetales Coffee & Eatery sering direkomendasikan untuk nugas karena suasana tenang, kopi enak, dan tempat yang nyaman."
+	},
+	{
+		id: 4,
+		name: "Anak Panah Kopi",
+		type: "Kafe",
+		location: "Tembalang",
+		budget: "Murah",
+		suasana: "Ramai",
 		rating: 4.5,
 		wifi: true,
 		plug: true,
 		comfyChair: true,
 		openLate: true,
 		longStudy: true,
-		description: "Kafe nyaman dengan suasana tenang dan WiFi stabil. Cocok untuk nugas panjang dengan kursi ergonomis."
-	},
-	{
-		id: 2,
-		name: "Perpus Universitas",
-		type: "Perpustakaan",
-		location: "Tembalang",
-		budget: "Murah",
-		suasana: "Tenang",
-		rating: 4.7,
-		wifi: true,
-		plug: false,
-		comfyChair: true,
-		openLate: false,
-		longStudy: true,
-		description: "Perpustakaan kampus dengan koleksi lengkap dan kursi belajar nyaman. Suasana sangat kondusif untuk fokus belajar."
-	},
-	{
-		id: 3,
-		name: "Kopi Santai",
-		type: "Kafe",
-		location: "Semarang Tengah",
-		budget: "Murah",
-		suasana: "Ramai",
-		rating: 4.0,
-		wifi: true,
-		plug: true,
-		comfyChair: false,
-		openLate: true,
-		longStudy: false,
-		description: "Kafe populer dengan harga terjangkau dan WiFi gratis. Suasana hidup namun kadang ramai untuk konsentrasi."
-	},
-	{
-		id: 4,
-		name: "Study Hub Premium",
-		type: "Kafe",
-		location: "Tembalang",
-		budget: "Mahal",
-		suasana: "Tenang",
-		rating: 4.8,
-		wifi: true,
-		plug: true,
-		comfyChair: true,
-		openLate: true,
-		longStudy: true,
-		description: "Ruang belajar premium dengan semua fasilitas lengkap. Fokus pada kenyamanan dan efisiensi belajar. Kursi gaming nyaman."
+		ac: true,
+		area: "Indoor",
+		description: "Anak Panah Kopi buka 24 jam dan cocok untuk nugas malam di Tembalang dengan pilihan kopi dan tempat yang cukup luas."
 	},
 	{
 		id: 5,
-		name: "Perpustakaan Kota Semarang",
-		type: "Perpustakaan",
-		location: "Semarang Kota",
-		budget: "Murah",
-		suasana: "Sedang",
-		rating: 4.3,
-		wifi: false,
+		name: "Mitsu Cafe Tembalang",
+		type: "Kafe",
+		location: "Tembalang",
+		budget: "Sedang",
+		suasana: "Tenang",
+		rating: 4.4,
+		wifi: true,
 		plug: true,
-		comfyChair: false,
+		comfyChair: true,
 		openLate: false,
-		longStudy: false,
-		description: "Perpustakaan umum dengan ruang baca yang luas dan koleksi buku lengkap. Buka hingga sore saja."
+		longStudy: true,
+		ac: true,
+		area: "Indoor",
+		description: "Mitsu Cafe adalah kafe cozy di Tembalang yang nyaman untuk belajar, lengkap dengan menu kopi dan camilan."
 	},
 	{
 		id: 6,
-		name: "Kafe Kopi Pagi",
+		name: "Antara Kata Coffee",
 		type: "Kafe",
-		location: "Ungaran",
+		location: "Tembalang",
+		budget: "Sedang",
+		suasana: "Tenang",
+		rating: 4.3,
+		wifi: true,
+		plug: true,
+		comfyChair: true,
+		openLate: false,
+		longStudy: true,
+		ac: true,
+		area: "Indoor",
+		description: "Antara Kata Coffee menawarkan suasana santai dan WiFi cepat, cocok untuk mahasiswa yang butuh fokus belajar."
+	},
+	{
+		id: 7,
+		name: "Tower Cafe Tembalang",
+		type: "Kafe",
+		location: "Tembalang",
 		budget: "Sedang",
 		suasana: "Sedang",
+		rating: 4.2,
+		wifi: true,
+		plug: true,
+		comfyChair: true,
+		openLate: false,
+		longStudy: true,
+		ac: true,
+		area: "Indoor",
+		description: "Tower Cafe Tembalang menyediakan tempat yang luas dan nyaman untuk belajar bersama sambil menikmati kopi."
+	},
+	{
+		id: 8,
+		name: "River View Cafe Tembalang",
+		type: "Kafe",
+		location: "Tembalang",
+		budget: "Sedang",
+		suasana: "Sedang",
+		rating: 4.0,
+		wifi: true,
+		plug: true,
+		comfyChair: true,
+		openLate: false,
+		longStudy: true,
+		ac: true,
+		area: "Indoor & Outdoor",
+		description: "River View Cafe cocok untuk nugas santai dengan pemandangan tenang dan pilihan menu kopi di Tembalang."
+	},
+	{
+		id: 9,
+		name: "Kopi Tembalang",
+		type: "Kafe",
+		location: "Tembalang",
+		budget: "Murah",
+		suasana: "Tenang",
 		rating: 4.1,
 		wifi: true,
 		plug: false,
 		comfyChair: true,
 		openLate: false,
 		longStudy: true,
-		description: "Kafe dengan menu lengkap dan suasana santai. Cocok untuk belajar siang hari bersama teman."
-	},
-	{
-		id: 7,
-		name: "Pojok Belajar Mahasiswa",
-		type: "Kafe",
-		location: "Tembalang",
-		budget: "Murah",
-		suasana: "Tenang",
-		rating: 4.4,
-		wifi: true,
-		plug: true,
-		comfyChair: false,
-		openLate: false,
-		longStudy: true,
-		description: "Tempat kecil khusus mahasiswa dengan suasana kondusif. Harga terjangkau, WiFi stabil, banyak stopkontak."
-	},
-	{
-		id: 8,
-		name: "Library Corner Modern",
-		type: "Perpustakaan",
-		location: "Semarang Timur",
-		budget: "Sedang",
-		suasana: "Tenang",
-		rating: 4.6,
-		wifi: true,
-		plug: true,
-		comfyChair: true,
-		openLate: false,
-		longStudy: true,
-		description: "Perpustakaan modern dengan area diskusi dan silent room. Cocok untuk mahasiswa yang butuh fokus tinggi."
-	},
-	{
-		id: 9,
-		name: "Kopi Malam Semarang",
-		type: "Kafe",
-		location: "Semarang Barat",
-		budget: "Mahal",
-		suasana: "Ramai",
-		rating: 4.2,
-		wifi: true,
-		plug: true,
-		comfyChair: true,
-		openLate: true,
-		longStudy: false,
-		description: "Kafe buka sampai larut dengan suasana hidup dan nyaman. Cocok untuk diskusi kelompok atau santai."
+		ac: false,
+		area: "Indoor",
+		description: "Kopi Tembalang adalah kedai kopi lokal yang sering jadi pilihan mahasiswa untuk nugas dan diskusi."
 	},
 	{
 		id: 10,
-		name: "Ruang Publik Kampus",
+		name: "Dapur Kampus Tembalang",
+		type: "Kafe",
+		location: "Tembalang",
+		budget: "Sedang",
+	suasana: "Sedang",
+		rating: 4.1,
+		wifi: true,
+		plug: true,
+		comfyChair: true,
+		openLate: false,
+		longStudy: true,
+		ac: true,
+		area: "Indoor & Outdoor",
+		description: "Dapur Kampus Tembalang menyediakan menu makan ringan dan tempat nugas dekat area kampus."
+	},
+	{
+		id: 11,
+		name: "Perpustakaan Universitas Diponegoro",
+		type: "Perpustakaan",
+		location: "Tembalang",
+		budget: "Murah",
+		suasana: "Tenang",
+		rating: 4.7,
+		wifi: true,
+		plug: true,
+		comfyChair: true,
+		openLate: false,
+		longStudy: true,
+		ac: true,
+		area: "Indoor",
+		description: "Perpustakaan Undip adalah tempat resmi di Tembalang untuk belajar fokus dengan koleksi lengkap dan ruang nyaman."
+	},
+	{
+		id: 12,
+		name: "Ruang Publik Kampus UNDIP",
 		type: "Perpustakaan",
 		location: "Tembalang",
 		budget: "Murah",
 		suasana: "Sedang",
-		rating: 4.0,
-		wifi: false,
-		plug: true,
-		comfyChair: true,
-		openLate: false,
-		longStudy: true,
-		description: "Ruang publik terbuka di dalam kampus. Gratis, banyak kursi nyaman, stopkontak tersedia di banyak tempat."
-	},
-	{
-		id: 11,
-		name: "Warung Kopi Tempo Dulu",
-		type: "Kafe",
-		location: "Semarang Pusat",
-		budget: "Murah",
-		suasana: "Tenang",
-		rating: 3.9,
+		rating: 4.3,
 		wifi: true,
 		plug: true,
 		comfyChair: true,
 		openLate: false,
 		longStudy: true,
-		description: "Warung kopi tradisional dengan harga super terjangkau. Nyaman untuk belajar dalam waktu lama."
+		ac: false,
+		area: "Indoor & Outdoor",
+		description: "Ruang publik kampus UNDIP menawarkan area belajar terbuka dan indoor untuk mahasiswa dengan akses stopkontak."
 	}
 ];
 
@@ -778,6 +817,127 @@ function handleResetClick() {
 }
 
 /**
+ * Menghasilkan rekomendasi AI dari pertanyaan pengguna
+ * @param {String} query - Pertanyaan pengguna
+ */
+function generateAIRecommendation(query) {
+	const normalized = query.toLowerCase();
+	const wantsCafe = /cafe|kafe|kopi|makan|makanan/.test(normalized);
+	const wantsLibrary = /perpustakaan|library|buku/.test(normalized);
+	const wantsStudyLong = /nugas|belajar|sampai jam|lama|kerja tugas|tugas/.test(normalized);
+	const wantsLate = /malam|jam 6|jam 7|jam 8|jam 9|sore|larut/.test(normalized);
+	const locationPref = /geodesi|tembalang|semarang tengah|semarang kota|semarang barat|semarang timur|ungaran/.exec(normalized);
+
+	let preferredType = "Semua";
+	if (wantsCafe && !wantsLibrary) preferredType = "Kafe";
+	if (wantsLibrary && !wantsCafe) preferredType = "Perpustakaan";
+
+	let filtered = places.slice();
+	if (preferredType !== "Semua") {
+		filtered = filtered.filter(place => place.type === preferredType);
+	}
+
+	if (locationPref) {
+		const keyword = locationPref[0];
+		if (/geodesi|tembalang/.test(keyword)) {
+			filtered = filtered.filter(place => place.location.toLowerCase().includes("tembalang"));
+		} else if (/semarang tengah/.test(keyword)) {
+			filtered = filtered.filter(place => place.location.toLowerCase().includes("semarang tengah"));
+		} else if (/semarang kota/.test(keyword)) {
+			filtered = filtered.filter(place => place.location.toLowerCase().includes("semarang kota"));
+		} else if (/semarang barat/.test(keyword)) {
+			filtered = filtered.filter(place => place.location.toLowerCase().includes("semarang barat"));
+		} else if (/semarang timur/.test(keyword)) {
+			filtered = filtered.filter(place => place.location.toLowerCase().includes("semarang timur"));
+		} else if (/ungaran/.test(keyword)) {
+			filtered = filtered.filter(place => place.location.toLowerCase().includes("ungaran"));
+		}
+	}
+
+	if (filtered.length === 0) {
+		filtered = places.slice();
+	}
+
+	const aiPreferences = {
+		budget: "Semua",
+		suasana: wantsStudyLong ? "Tenang" : "Semua",
+		ac: "Semua",
+		area: "Semua",
+		wifi: true,
+		plug: true,
+		comfyChair: wantsStudyLong,
+		openLate: wantsLate,
+		longStudy: wantsStudyLong
+	};
+
+	const scored = filtered.map(place => ({
+		...place,
+		score: calculateScore(place, aiPreferences)
+	}));
+
+	scored.sort((a, b) => b.score - a.score || b.rating - a.rating);
+
+	const bestPlaces = scored.slice(0, 3);
+	if (bestPlaces.length === 0) {
+		return {
+			title: "Maaf, tidak ada rekomendasi dari daftar saat ini",
+			message: "Coba ubah pertanyaan atau gunakan preferensi lain.",
+			places: []
+		};
+	}
+
+	const reasonParts = [];
+	if (preferredType === "Kafe") reasonParts.push("kamu mencari kafe atau tempat makan");
+	if (preferredType === "Perpustakaan") reasonParts.push("kamu mencari perpustakaan atau tempat belajar tenang");
+	if (wantsStudyLong) reasonParts.push("kamu butuh tempat yang cocok untuk nugas atau belajar lama");
+	if (wantsLate) reasonParts.push("kamu mencari tempat dengan jam buka lebih panjang");
+	if (locationPref) reasonParts.push(`berdasarkan area ${locationPref[0]}`);
+
+	return {
+		title: "Rekomendasi AI untuk rute dan tempat",
+		message: `Berdasarkan pertanyaanmu, AI merekomendasikan tempat berikut dari daftar kami:`,
+		places: bestPlaces,
+		reasons: reasonParts.filter(Boolean)
+	};
+}
+
+function showAIResponse(result) {
+	const aiResponse = document.getElementById("aiResponse");
+	if (!result || !result.places) {
+		aiResponse.textContent = "Terjadi kesalahan. Silakan coba lagi.";
+		aiResponse.classList.remove("hidden");
+		return;
+	}
+
+	const placeItems = result.places.map(place => `
+					<li><strong>${place.name}</strong> (${place.type}, ${place.location}) - Kecocokan ${place.score}%</li>
+				`).join("");
+
+	aiResponse.innerHTML = `
+				<p><strong>${result.title}</strong></p>
+				<p>${result.message}</p>
+				${result.reasons && result.reasons.length ? `<p><em>Mengapa?</em> ${result.reasons.join(', ')}.</p>` : ""}
+				<ul>${placeItems}</ul>
+			`;
+	aiResponse.classList.remove("hidden");
+}
+
+function handleAIPlanClick() {
+	const query = document.getElementById("aiQuery").value.trim();
+	if (!query) {
+		showAIResponse({
+			title: "Masukkan pertanyaan terlebih dahulu",
+			message: "Tuliskan kebutuhanmu agar AI bisa merekomendasikan tempat terbaik dari daftar.",
+			places: []
+		});
+		return;
+	}
+
+	const aiResult = generateAIRecommendation(query);
+	showAIResponse(aiResult);
+}
+
+/**
  * Handler untuk tombol favorite di place card
  * @param {Event} e - Event object
  */
@@ -842,6 +1002,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	document.getElementById("startBtn").addEventListener("click", handleStartClick);
 	document.getElementById("searchBtn").addEventListener("click", handleSearchClick);
 	document.getElementById("resetBtn").addEventListener("click", handleResetClick);
+	document.getElementById("aiPlanBtn").addEventListener("click", handleAIPlanClick);
 	document.getElementById("backBtn").addEventListener("click", handleBackClick);
 	document.getElementById("backFromFavBtn").addEventListener("click", handleBackFromFavClick);
 	document.getElementById("favoritesBtn").addEventListener("click", handleFavoritesButtonClick);
