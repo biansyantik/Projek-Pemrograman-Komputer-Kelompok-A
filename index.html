@@ -13,7 +13,10 @@
 			<h1>🎓 Tempat Nugas Semarang</h1>
 			<p class="subtitle">Temukan tempat belajar/nugas terbaik sesuai preferensimu</p>
 		</div>
-		<button id="favoritesBtn" class="btn-icon" title="Lihat favorit">⭐</button>
+		<div class="topbar-actions">
+			<button id="themeToggleBtn" class="btn secondary btn-icon" title="Toggle Dark Mode">🌙</button>
+			<button id="favoritesBtn" class="btn-icon" title="Lihat favorit">⭐</button>
+		</div>
 	</header>
 
 	<main class="container">
@@ -83,6 +86,15 @@
 					</label>
 
 					<label class="form-group">
+						<span class="label-text">Rating Minimum</span>
+						<select id="ratingFilter">
+							<option value="Semua">Semua</option>
+							<option value="4.0">4.0+</option>
+							<option value="4.5">4.5+</option>
+						</select>
+					</label>
+
+					<label class="form-group">
 						<span class="label-text">Mushola</span>
 						<select id="mushola">
 							<option value="Semua">Semua</option>
@@ -140,6 +152,21 @@
 
 				<!-- Hasil Rekomendasi -->
 				<main class="results-panel">
+					<div class="search-panel card">
+						<label class="form-group">
+							<span class="label-text">Cari Nama Tempat</span>
+							<input id="searchInput" type="search" placeholder="Ketik nama tempat..." />
+						</label>
+						<div class="form-group">
+							<span class="label-text">Urutkan Berdasarkan</span>
+							<select id="sortBy">
+								<option value="score">Skor Tertinggi</option>
+								<option value="rating">Rating Tertinggi</option>
+								<option value="budget">Budget Termurah</option>
+							</select>
+						</div>
+					</div>
+					<div id="statsCard" class="card stats-card hidden"></div>
 					<div id="resultSection" class="hidden">
 						<h2>📋 Hasil Rekomendasi</h2>
 						<div id="resultsList" class="places-grid"></div>

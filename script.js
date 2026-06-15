@@ -221,6 +221,13 @@ const places = [
 	}
 ];
 
+// Pastikan setiap tempat memiliki field maps (link Google Maps)
+places.forEach(p => {
+	if (!p.maps) {
+		p.maps = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.name + ' Semarang')}`;
+	}
+});
+
 // ===============================
 // STATE MANAGEMENT
 // ===============================
@@ -243,6 +250,13 @@ let currentResults = [];
 
 // Variabel untuk menyimpan tempat yang sedang dilihat detail
 let currentDetailPlace = null;
+
+// Variabel untuk menyimpan filter realtime
+let currentSearchTerm = "";
+let currentRatingFilter = "Semua";
+
+const THEME_STORAGE_KEY = "preferredTheme";
+const DEFAULT_THEME = "light";
 
 // ===============================
 // UTILITY FUNCTIONS
@@ -324,6 +338,49 @@ function getRecommendationBadge(score) {
 	} else {
 		return { class: "badge-poor", text: "❌ Kurang Sesuai" };
 	}
+}
+
+/**
+ * Simpan preferensi tema ke localStorage
+ * @param {String} theme - "light" atau "dark"
+ */
+function saveThemePreference(theme) {
+	localStorage.setItem(THEME_STORAGE_KEY, theme);
+}
+
+/**
+ * Terapkan tema ke halaman
+ * @param {String} theme - "light" atau "dark"
+ */
+function applyTheme(theme) {
+	const isDark = theme === "dark";
+	document.body.classList.toggle("dark-mode", isDark);
+	const themeButton = document.getElementById("themeToggleBtn");
+	if (themeButton) {
+		themeButton.textContent = isDark ? "☀️" : "🌙";
+		themeButton.title = isDark ? "Light Mode" : "Dark Mode";
+	}
+}
+
+/**
+ * Muat tema dari localStorage saat halaman dibuka
+ */
+function loadSavedTheme() {
+	const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+	if (savedTheme === "dark") {
+		applyTheme("dark");
+	} else {
+		applyTheme(DEFAULT_THEME);
+	}
+}
+
+/**
+ * Toggle dark mode dan simpan ke localStorage
+ */
+function handleThemeToggle() {
+	const isDark = !document.body.classList.contains("dark-mode");
+	applyTheme(isDark ? "dark" : "light");
+	saveThemePreference(isDark ? "dark" : "light");
 }
 
 // ===============================
@@ -434,35 +491,73 @@ function calculateScore(place, preferences) {
 function searchAndScore() {
 	// Simpan preferensi saat ini
 	currentPreferences = {
-		type: document.getElementById("type").value,
-		budget: document.getElementById("budget").value,
-		suasana: document.getElementById("suasana").value,
-		ac: document.getElementById("ac").value,
-		area: document.getElementById("area").value,
-		mushola: document.getElementById("mushola").value,
-		wifi: document.getElementById("wifi").checked,
-		plug: document.getElementById("plug").checked,
-		comfyChair: document.getElementById("chair").checked,
-		openLate: document.getElementById("lateOpen").checked,
-		longStudy: document.getElementById("longStudy").checked
+		type: document.getElementById("type") ? document.getElementById("type").value : "Semua",
+		budget: document.getElementById("budget") ? document.getElementById("budget").value : "Semua",
+		suasana: document.getElementById("suasana") ? document.getElementById("suasana").value : "Semua",
+		ac: document.getElementById("ac") ? document.getElementById("ac").value : "Semua",
+		area: document.getElementById("area") ? document.getElementById("area").value : "Semua",
+		mushola: document.getElementById("mushola") ? document.getElementById("mushola").value : "Semua",
+		wifi: document.getElementById("wifi") ? document.getElementById("wifi").checked : false,
+		plug: document.getElementById("plug") ? document.getElementById("plug").checked : false,
+		comfyChair: document.getElementById("chair") ? document.getElementById("chair").checked : false,
+		openLate: document.getElementById("lateOpen") ? document.getElementById("lateOpen").checked : false,
+		longStudy: document.getElementById("longStudy") ? document.getElementById("longStudy").checked : false
 	};
 
-	// Filter tempat berdasarkan tipe
-	let filtered = places;
-	if (currentPreferences.type !== "Semua") {
-		filtered = places.filter(p => p.type === currentPreferences.type);
-	}
+	const searchInput = document.getElementById("searchInput");
+	currentSearchTerm = searchInput ? searchInput.value.trim().toLowerCase() : "";
 
-	// Hitung skor untuk setiap tempat
+	const ratingFilterElement = document.getElementById("ratingFilter");
+	currentRatingFilter = ratingFilterElement ? ratingFilterElement.value : "Semua";
+
+	const filtered = places.filter(place => {
+		if (currentPreferences.type !== "Semua" && place.type !== currentPreferences.type) {
+			return false;
+		}
+
+		if (currentRatingFilter !== "Semua" && place.rating < parseFloat(currentRatingFilter)) {
+			return false;
+		}
+
+		if (currentSearchTerm && !place.name.toLowerCase().includes(currentSearchTerm)) {
+			return false;
+		}
+
+		return true;
+	});
+
 	const withScores = filtered.map(place => ({
 		...place,
 		score: calculateScore(place, currentPreferences)
 	}));
 
-	// Urutkan dari skor tertinggi
-	withScores.sort((a, b) => b.score - a.score);
+	// Apply sorting according to current sort selection
+	const sortSelect = document.getElementById("sortBy");
+	const sortBy = sortSelect ? sortSelect.value : "score";
+	const sorted = applySortingToResults(withScores, sortBy);
 
-	return withScores;
+	return sorted;
+}
+
+/**
+ * Sorting helper untuk hasil saat ini
+ * @param {Array} results
+ * @param {String} sortBy
+ * @returns {Array}
+ */
+function applySortingToResults(results, sortBy) {
+	const copy = results.slice();
+	if (sortBy === 'rating') {
+		copy.sort((a, b) => b.rating - a.rating || b.score - a.score);
+	} else if (sortBy === 'budget') {
+		// Murah < Sedang < Mahal
+		const rank = { 'Murah': 1, 'Sedang': 2, 'Mahal': 3 };
+		copy.sort((a, b) => (rank[a.budget] || 99) - (rank[b.budget] || 99) || b.score - a.score);
+	} else {
+		// default: score
+		copy.sort((a, b) => b.score - a.score || b.rating - a.rating);
+	}
+	return copy;
 }
 
 // ===============================
@@ -484,6 +579,7 @@ function createPlaceCard(place) {
 			<button class="favorite-btn ${isSaved ? "saved" : ""}" data-place-id="${place.id}" title="Simpan ke favorit">
 				${isSaved ? "⭐" : "☆"}
 			</button>
+			${isSaved ? '<span class="favorite-badge">⭐ Favorit</span>' : ''}
 
 			<div class="place-header">
 				<h3 class="place-name">${place.name}</h3>
@@ -525,15 +621,18 @@ function displayResults() {
 	const resultsList = document.getElementById("resultsList");
 	const resultSection = document.getElementById("resultSection");
 	const emptyState = document.getElementById("emptyState");
+	const statsCard = document.getElementById("statsCard");
 
 	if (currentResults.length === 0) {
-		resultSection.classList.add("hidden");
-		emptyState.classList.remove("hidden");
+		if (resultSection) resultSection.classList.add("hidden");
+		if (emptyState) emptyState.classList.remove("hidden");
+		if (statsCard) statsCard.classList.add('hidden');
 		return;
 	}
 
-	resultSection.classList.remove("hidden");
-	emptyState.classList.add("hidden");
+	if (resultSection) resultSection.classList.remove("hidden");
+	if (emptyState) emptyState.classList.add("hidden");
+	if (statsCard) statsCard.classList.remove('hidden');
 
 	const html = currentResults.map(place => createPlaceCard(place)).join("");
 	resultsList.innerHTML = html;
@@ -547,6 +646,25 @@ function displayResults() {
 	document.querySelectorAll(".detail-btn").forEach(btn => {
 		btn.addEventListener("click", handleDetailClick);
 	});
+}
+
+/**
+ * Render statistik setelah pencarian
+ */
+function renderStats(results) {
+	const statsCard = document.getElementById('statsCard');
+	if (!statsCard) return;
+
+	const total = results.length;
+	const avgRating = (results.reduce((s, r) => s + (r.rating || 0), 0) / (total || 1));
+	const top = results[0];
+
+	statsCard.innerHTML = `
+		<h3>📊 Statistik Hasil</h3>
+		<div class="stat-item">📍 <strong>${total}</strong> tempat ditemukan</div>
+		<div class="stat-item">⭐ Rating rata-rata: <strong>${avgRating.toFixed(2)}</strong></div>
+		<div class="stat-item">🏆 Tempat terbaik: <strong>${top ? top.name : '-'}</strong></div>
+	`;
 }
 
 /**
@@ -691,13 +809,16 @@ function showDetailPage(placeId) {
 
 		<div style="display: flex; gap: 10px; margin-top: 20px;">
 			<button class="btn primary full" id="saveFromDetail">⭐ ${isFavorite(place.id) ? "Hapus dari Favorit" : "Simpan ke Favorit"}</button>
+			<button class="btn secondary" id="openMaps">📍 Buka Google Maps</button>
 		</div>
 	`;
 
 	detailContent.innerHTML = html;
 
 	// Event listener untuk tombol simpan favorit di halaman detail
-	document.getElementById("saveFromDetail").addEventListener("click", () => {
+	const saveBtn = document.getElementById("saveFromDetail");
+	if (saveBtn) {
+		saveBtn.addEventListener("click", () => {
 		if (isFavorite(place.id)) {
 			removeFromFavorites(place.id);
 		} else {
@@ -707,6 +828,16 @@ function showDetailPage(placeId) {
 		showDetailPage(place.id);
 		updateFavoritesDisplay();
 	});
+	}
+
+	// Open Google Maps button
+	const openMapsBtn = document.getElementById("openMaps");
+	if (openMapsBtn) {
+		const mapsUrl = place.maps || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name + ' Semarang')}`;
+		openMapsBtn.addEventListener('click', () => {
+			window.open(mapsUrl, '_blank', 'noopener');
+		});
+	}
 
 	// Tampilkan halaman detail
 	document.getElementById("onboarding").classList.add("hidden");
@@ -824,31 +955,63 @@ function handleSearchClick() {
 	currentResults = searchAndScore();
 	displayResults();
 
-	// Scroll ke hasil
-	document.querySelector(".results-panel").scrollIntoView({ behavior: "smooth" });
+	// Scroll ke hasil jika panel tersedia
+	const resultsPanel = document.querySelector(".results-panel");
+	if (resultsPanel) {
+		resultsPanel.scrollIntoView({ behavior: "smooth" });
+	}
+
+	// After search, update stats
+	renderStats(currentResults);
 }
 
 /**
  * Handler untuk tombol "Reset"
  */
 function handleResetClick() {
-	document.getElementById("type").value = "Semua";
-	document.getElementById("budget").value = "Semua";
-	document.getElementById("suasana").value = "Semua";
-	document.getElementById("ac").value = "Semua";
-	document.getElementById("area").value = "Semua";
-	document.getElementById("mushola").value = "Semua";
-	document.getElementById("wifi").checked = false;
-	document.getElementById("plug").checked = false;
-	document.getElementById("chair").checked = false;
-	document.getElementById("lateOpen").checked = false;
-	document.getElementById("longStudy").checked = false;
+	const setValue = (id, value) => {
+		const element = document.getElementById(id);
+		if (element) {
+			element.value = value;
+		}
+	};
 
+	const setChecked = (id, value) => {
+		const element = document.getElementById(id);
+		if (element) {
+			element.checked = value;
+		}
+	};
+
+	setValue("type", "Semua");
+	setValue("budget", "Semua");
+	setValue("suasana", "Semua");
+	setValue("ac", "Semua");
+	setValue("area", "Semua");
+	setValue("ratingFilter", "Semua");
+	setValue("mushola", "Semua");
+	setValue("searchInput", "");
+	setChecked("wifi", false);
+	setChecked("plug", false);
+	setChecked("chair", false);
+	setChecked("lateOpen", false);
+	setChecked("longStudy", false);
+
+	currentSearchTerm = "";
+	currentRatingFilter = "Semua";
 	currentResults = [];
+
 	const resultSection = document.getElementById("resultSection");
 	const emptyState = document.getElementById("emptyState");
-	resultSection.classList.add("hidden");
-	emptyState.classList.remove("hidden");
+	if (resultSection) {
+		resultSection.classList.add("hidden");
+	}
+	if (emptyState) {
+		emptyState.classList.remove("hidden");
+	}
+
+	const statsCard = document.getElementById('statsCard');
+	if (statsCard) statsCard.classList.add('hidden');
 }
 
 /**
@@ -958,8 +1121,9 @@ function showAIResponse(result) {
 }
 
 function handleAIPlanClick() {
-	const query = document.getElementById("aiQuery").value.trim();
-	if (!query) {
+    const aiQueryEl = document.getElementById("aiQuery");
+    const query = aiQueryEl ? aiQueryEl.value.trim() : "";
+    if (!query) {
 		showAIResponse({
 			title: "Masukkan pertanyaan terlebih dahulu",
 			message: "Tuliskan kebutuhanmu agar AI bisa merekomendasikan tempat terbaik dari daftar.",
@@ -991,6 +1155,9 @@ function handleFavoriteClick(e) {
 	}
 
 	updateFavoritesDisplay();
+
+	// Re-render results so favorite badge appears immediately
+	displayResults();
 }
 
 /**
@@ -1034,21 +1201,62 @@ function handleFavoritesButtonClick() {
 
 document.addEventListener("DOMContentLoaded", () => {
 	// Attach event listeners untuk tombol utama
-	document.getElementById("startBtn").addEventListener("click", handleStartClick);
-	document.getElementById("searchBtn").addEventListener("click", handleSearchClick);
-	document.getElementById("resetBtn").addEventListener("click", handleResetClick);
-	document.getElementById("aiPlanBtn").addEventListener("click", handleAIPlanClick);
-	document.getElementById("backBtn").addEventListener("click", handleBackClick);
-	document.getElementById("backFromFavBtn").addEventListener("click", handleBackFromFavClick);
-	document.getElementById("favoritesBtn").addEventListener("click", handleFavoritesButtonClick);
+	const startBtn = document.getElementById("startBtn");
+	const searchBtn = document.getElementById("searchBtn");
+	const resetBtn = document.getElementById("resetBtn");
+	const aiPlanBtn = document.getElementById("aiPlanBtn");
+	const backBtn = document.getElementById("backBtn");
+	const backFromFavBtn = document.getElementById("backFromFavBtn");
+	const favoritesBtn = document.getElementById("favoritesBtn");
+	const themeToggleBtn = document.getElementById("themeToggleBtn");
+	const prefForm = document.getElementById("prefForm");
+	const searchInput = document.getElementById("searchInput");
+	const ratingFilter = document.getElementById("ratingFilter");
 
-	// Optional: Trigger Enter key di form
-	document.getElementById("prefForm").addEventListener("keypress", (e) => {
-		if (e.key === "Enter") {
-			e.preventDefault();
-			handleSearchClick();
-		}
-	});
+	if (startBtn) startBtn.addEventListener("click", handleStartClick);
+	if (searchBtn) searchBtn.addEventListener("click", handleSearchClick);
+	if (resetBtn) resetBtn.addEventListener("click", handleResetClick);
+	if (aiPlanBtn) aiPlanBtn.addEventListener("click", handleAIPlanClick);
+	if (backBtn) backBtn.addEventListener("click", handleBackClick);
+	if (backFromFavBtn) backFromFavBtn.addEventListener("click", handleBackFromFavClick);
+	if (favoritesBtn) favoritesBtn.addEventListener("click", handleFavoritesButtonClick);
+	if (themeToggleBtn) themeToggleBtn.addEventListener("click", handleThemeToggle);
+
+	if (prefForm) {
+		prefForm.addEventListener("keypress", (e) => {
+			if (e.key === "Enter") {
+				e.preventDefault();
+				handleSearchClick();
+			}
+		});
+	}
+
+	if (searchInput) {
+		// realtime search while typing
+		searchInput.addEventListener("input", handleSearchClick);
+	}
+
+	// ratingFilter should not auto-run search when changed; search runs only on button click
+	if (ratingFilter) {
+		ratingFilter.addEventListener('change', () => {
+			// only update currentRatingFilter, do not call search automatically
+			currentRatingFilter = ratingFilter.value;
+		});
+	}
+
+	// Sorting: when changed, apply to current results immediately
+	const sortSelect = document.getElementById('sortBy');
+	if (sortSelect) {
+		sortSelect.addEventListener('change', () => {
+			if (currentResults && currentResults.length) {
+				currentResults = applySortingToResults(currentResults, sortSelect.value);
+				displayResults();
+				renderStats(currentResults);
+			}
+		});
+	}
+
+	loadSavedTheme();
 
 	// Log untuk development
 	console.log("✅ Aplikasi Rekomendasi Tempat Belajar Semarang berhasil dimuat!");
