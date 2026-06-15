@@ -18,6 +18,7 @@ const places = [
 		longStudy: true,
 		ac: true,
 		area: "Indoor",
+		mushola: false,
 		description: "Embun Senja Coffee n Eatery di Tembalang populer dengan suasana nyaman, WiFi kencang, dan menu kopi plus makanan yang lengkap."
 	},
 	{
@@ -35,6 +36,7 @@ const places = [
 		longStudy: true,
 		ac: true,
 		area: "Indoor",
+		mushola: false,
 		description: "Kopi Nako Tembalang terkenal karena suasana cozy dan kopi enak, cocok untuk nugas atau kerja kelompok."
 	},
 	{
@@ -52,6 +54,7 @@ const places = [
 		longStudy: true,
 		ac: true,
 		area: "Indoor",
+		mushola: false,
 		description: "Treetales Coffee & Eatery sering direkomendasikan untuk nugas karena suasana tenang, kopi enak, dan tempat yang nyaman."
 	},
 	{
@@ -69,6 +72,7 @@ const places = [
 		longStudy: true,
 		ac: true,
 		area: "Indoor",
+		mushola: false,
 		description: "Anak Panah Kopi buka 24 jam dan cocok untuk nugas malam di Tembalang dengan pilihan kopi dan tempat yang cukup luas."
 	},
 	{
@@ -86,6 +90,7 @@ const places = [
 		longStudy: true,
 		ac: true,
 		area: "Indoor",
+		mushola: false,
 		description: "Mitsu Cafe adalah kafe cozy di Tembalang yang nyaman untuk belajar, lengkap dengan menu kopi dan camilan."
 	},
 	{
@@ -103,6 +108,7 @@ const places = [
 		longStudy: true,
 		ac: true,
 		area: "Indoor",
+		mushola: false,
 		description: "Antara Kata Coffee menawarkan suasana santai dan WiFi cepat, cocok untuk mahasiswa yang butuh fokus belajar."
 	},
 	{
@@ -120,6 +126,7 @@ const places = [
 		longStudy: true,
 		ac: true,
 		area: "Indoor",
+		mushola: false,
 		description: "Tower Cafe Tembalang menyediakan tempat yang luas dan nyaman untuk belajar bersama sambil menikmati kopi."
 	},
 	{
@@ -137,6 +144,7 @@ const places = [
 		longStudy: true,
 		ac: true,
 		area: "Indoor & Outdoor",
+		mushola: false,
 		description: "River View Cafe cocok untuk nugas santai dengan pemandangan tenang dan pilihan menu kopi di Tembalang."
 	},
 	{
@@ -154,6 +162,7 @@ const places = [
 		longStudy: true,
 		ac: false,
 		area: "Indoor",
+		mushola: false,
 		description: "Kopi Tembalang adalah kedai kopi lokal yang sering jadi pilihan mahasiswa untuk nugas dan diskusi."
 	},
 	{
@@ -171,6 +180,7 @@ const places = [
 		longStudy: true,
 		ac: true,
 		area: "Indoor & Outdoor",
+		mushola: false,
 		description: "Dapur Kampus Tembalang menyediakan menu makan ringan dan tempat nugas dekat area kampus."
 	},
 	{
@@ -188,6 +198,7 @@ const places = [
 		longStudy: true,
 		ac: true,
 		area: "Indoor",
+		mushola: true,
 		description: "Perpustakaan Undip adalah tempat resmi di Tembalang untuk belajar fokus dengan koleksi lengkap dan ruang nyaman."
 	},
 	{
@@ -205,6 +216,7 @@ const places = [
 		longStudy: true,
 		ac: false,
 		area: "Indoor & Outdoor",
+		mushola: true,
 		description: "Ruang publik kampus UNDIP menawarkan area belajar terbuka dan indoor untuk mahasiswa dengan akses stopkontak."
 	}
 ];
@@ -222,7 +234,8 @@ let currentPreferences = {
 	plug: false,
 	comfyChair: false,
 	openLate: false,
-	longStudy: false
+	longStudy: false,
+	mushola: "Semua"
 };
 
 // Variabel untuk menyimpan hasil rekomendasi saat ini
@@ -342,7 +355,8 @@ function calculateScore(place, preferences) {
 		openLate: 8,
 		longStudy: 8,
 		ac: 8,
-		area: 8
+		area: 8,
+		mushola: 8
 	};
 
 	let score = 0;
@@ -401,6 +415,15 @@ function calculateScore(place, preferences) {
 		score += weights.area;
 	}
 
+	// Mushola preference
+	if (preferences.mushola === "Semua") {
+		score += weights.mushola;
+	} else if (preferences.mushola === "Ada" && place.mushola) {
+		score += weights.mushola;
+	} else if (preferences.mushola === "Tidak" && !place.mushola) {
+		score += weights.mushola;
+	}
+
 	return Math.min(score, 100);
 }
 
@@ -416,6 +439,7 @@ function searchAndScore() {
 		suasana: document.getElementById("suasana").value,
 		ac: document.getElementById("ac").value,
 		area: document.getElementById("area").value,
+		mushola: document.getElementById("mushola").value,
 		wifi: document.getElementById("wifi").checked,
 		plug: document.getElementById("plug").checked,
 		comfyChair: document.getElementById("chair").checked,
@@ -564,6 +588,11 @@ function showDetailPage(placeId) {
 	if (currentPreferences.longStudy && place.longStudy) {
 		reasons.push("Sangat cocok untuk sesi belajar panjang");
 	}
+	if (currentPreferences.mushola === "Ada" && place.mushola) {
+		reasons.push("Terdapat mushola di lokasi ini");
+	} else if (currentPreferences.mushola === "Tidak" && !place.mushola) {
+		reasons.push("Tidak terdapat mushola di lokasi ini");
+	}
 
 	// Jika tidak ada alasan custom, buat default
 	if (reasons.length === 0) {
@@ -631,6 +660,11 @@ function showDetailPage(placeId) {
 				<span class="facility-icon">❄️</span>
 				<span class="facility-name">AC</span>
 				<span class="facility-status ${place.ac ? "yes" : "no"}">${place.ac ? "✓ Ya" : "✗ Tidak"}</span>
+			</div>
+			<div class="facility-item">
+				<span class="facility-icon">🕌</span>
+				<span class="facility-name">Mushola</span>
+				<span class="facility-status ${place.mushola ? "yes" : "no"}">${place.mushola ? "✓ Ada" : "✗ Tidak"}</span>
 			</div>
 			<div class="facility-item">
 				<span class="facility-icon">🏠</span>
@@ -803,6 +837,7 @@ function handleResetClick() {
 	document.getElementById("suasana").value = "Semua";
 	document.getElementById("ac").value = "Semua";
 	document.getElementById("area").value = "Semua";
+	document.getElementById("mushola").value = "Semua";
 	document.getElementById("wifi").checked = false;
 	document.getElementById("plug").checked = false;
 	document.getElementById("chair").checked = false;
